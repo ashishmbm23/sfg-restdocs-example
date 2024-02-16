@@ -1,5 +1,6 @@
 package guru.springframework.sfgrestdocsexample.web.controller;
 
+import guru.springframework.sfgrestdocsexample.domain.Beer;
 import guru.springframework.sfgrestdocsexample.repositories.BeerRepository;
 import guru.springframework.sfgrestdocsexample.web.mappers.BeerMapper;
 import guru.springframework.sfgrestdocsexample.web.model.BeerDto;
@@ -9,7 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Created by jt on 2019-05-12.
@@ -25,6 +30,7 @@ public class BeerController {
     @GetMapping("/{beerId}")
     public ResponseEntity<BeerDto> getBeerById(@PathVariable("beerId") UUID beerId){
 
+        given(beerRepository.findById(any())).willReturn(Optional.of(Beer.builder().build()));
 
         return new ResponseEntity<>(beerMapper.BeerToBeerDto(beerRepository.findById(beerId).get()), HttpStatus.OK);
     }
